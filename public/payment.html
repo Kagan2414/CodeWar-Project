@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .payment-container {
+            background: white;
+            color: #333;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .payment-container h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .payment-option button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            background: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .payment-option button:hover {
+            background: #2575fc;
+            transform: translateY(-3px);
+        }
+
+        .qr-code img {
+            display: block;
+            margin: 20px auto;
+            animation: zoomIn 0.5s;
+        }
+
+        .back-button {
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .back-button:hover {
+            background: #6a11cb;
+            transform: translateY(-3px);
+        }
+
+        .upload-section p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .upload-label {
+            font-size: 1rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .confirm-button {
+            background: #6a11cb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .confirm-button:hover {
+            background: #2575fc;
+            transform: translateY(-3px);
+        }
+
+        .confirm-button:disabled {
+            background: grey;
+            cursor: not-allowed;
+        }
+
+        .success-screen {
+            display: none;
+            animation: slideDown 0.5s ease-in-out;
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            color: #6a11cb;
+            margin-bottom: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="payment-container" id="paymentContainer">
+    <h1>Payment Method</h1>
+    <div class="payment-option">
+        <button id="qrButton">Pay via QR</button>
+    </div>
+    <div id="qrSection" class="qr-code">
+        <img src="img/qr_pay.png" alt="QR Code" style="width: 300px; height: 300px; border-radius: 20px;" >
+        <button id="backButton" class="back-button">Back</button>
+        <div class="upload-section" id="uploadSection">
+            <p>After completing the payment, please upload the payment screenshot:</p>
+            <label for="paymentScreenshot" class="upload-label">
+                Choose Screenshot
+            </label>
+            <input type="file" 
+                   id="paymentScreenshot" 
+                   class="file-input"
+                   accept="image/*">
+            <img id="previewImage" alt="Payment Screenshot Preview" style="width: 200px; height: 300px;">
+            <button id="confirmButton" class="confirm-button" disabled>
+                Verify Payment
+            </button>
+        </div>
+    </div>
+    <div id="successSection" class="success-screen">
+        <div class="success-icon">✓</div>
+        <h2>Payment Successful!</h2>
+        <p>Thank you for your payment</p>
+        <div id="uploadStatus"></div>
+    </div>
+</div>
+
+<script>
+    const qrButton = document.getElementById('qrButton');
+    const qrSection = document.getElementById('qrSection');
+    const backButton = document.getElementById('backButton');
+    const confirmButton = document.getElementById('confirmButton');
+    const successSection = document.getElementById('successSection');
+    const uploadSection = document.getElementById('uploadSection');
+    const paymentScreenshot = document.getElementById('paymentScreenshot');
+    const previewImage = document.getElementById('previewImage');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    window.onload = function() {
+        qrSection.style.display = 'none';
+        successSection.style.display = 'none';
+        uploadSection.style.display = 'none';
+        backButton.style.display = 'none';
+        previewImage.style.display = 'none';
+    };
+
+    qrButton.addEventListener('click', () => {
+        qrSection.style.display = 'block';
+        uploadSection.style.display = 'block';
+        backButton.style.display = 'inline-block';
+        qrButton.style.display = 'none';
+    });
+
+    backButton.addEventListener('click', () => {
+        qrSection.style.display = 'none';
+        backButton.style.display = 'none';
+        qrButton.style.display = 'inline-block';
+        previewImage.style.display = 'none';
+        confirmButton.disabled = true;
+    });
+
+    paymentScreenshot.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+                confirmButton.disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    confirmButton.addEventListener('click', async () => {
+        try {
+            confirmButton.disabled = true;
+            confirmButton.textContent = 'Verifying...';
+
+            const paymentId = 'PAY-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            
+            // Create form data
+            const formData = new FormData();
+            formData.append('screenshot', previewImage.src);
+            formData.append('paymentId', paymentId);
+            formData.append('timestamp', new Date().toISOString());
+
+            const response = await fetch('/api/save-payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    screenshot: previewImage.src,
+                    paymentId: paymentId,
+                    timestamp: new Date().toISOString()
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                qrSection.style.display = 'none';
+                successSection.style.display = 'block';
+                uploadStatus.textContent = 'Payment verified successfully!';
+                localStorage.setItem('lastPaymentId', paymentId);
+                setTimeout(() => {
+                    window.location.href = 'code.html';
+                }, 2000);
+            } else {
+                throw new Error(data.message || 'Error verifying payment');
+            }
+
+        } catch (error) {
+            console.error('Error processing payment:', error);
+            uploadStatus.textContent = 'Error: ' + error.message;
+            confirmButton.disabled = false;
+            confirmButton.textContent = 'Verify Payment';
+        }
+    });
+</script>
+
+</body>
+</html>

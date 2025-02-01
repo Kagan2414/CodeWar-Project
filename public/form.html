@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form CodeWar</title>
+    <link rel="icon" href="img/codewar-logo.jpg">
+    <link href="css/code.css" rel="stylesheet" type="text/css"/>
+    <script src="js/webfont.js" type="text/javascript"></script>
+    <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=6674f0cdb5b7b401612cf015" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="js/code.js" type="text/javascript"></script>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("img/codewar-logo.jpg"),url("https://cdn.prod.website-files.com/6674f0cdb5b7b401612cf015/6674f0cdb5b7b401612cf065_noise-50.avif");
+            background-size: cover; /* Ensures the image covers the entire screen */
+            background-attachment: fixed; /* Keeps the background fixed during scrolling */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            backdrop-filter: blur(15px); /* Adds a subtle blur for elegance */
+            overflow-x: hidden; /* Hides horizontal overflow */
+        }
+        .container {
+            max-width: 700px;
+            padding: 20px;  
+            backdrop-filter: blur(8px);
+        }
+        .card {
+            background:     rgba(255, 255, 255, 0.2); /* Transparent white background */
+            backdrop-filter: blur(10px); /* Adds a blur effect for the content behind */
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 16px 32px rgba(3, 238, 15, 0.3); /* Subtle shadow for depth */
+            padding: 30px; /* Padding for inner spacing */
+            border: 0.5px solid rgba(0, 231, 4, 0.3); /* Border for definition */
+            animation: fade-in 0.8s ease-in-out; /* Smooth appearance animation */
+        }
+        /* Optional animation for a smooth fade-in effect */
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card h2 {
+            color: #121312; /* Dark color for the heading */
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #080808; /* Lighter color for form labels */
+        }
+        .form-select, .form-control {
+            border-radius: 6px;
+            border: 1px solid #39a21b; /* Dark border color */
+            background-color: #000000; /* White background for form inputs */
+            color: #ffffff; /* Black text color for form inputs */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            padding: 0.75rem 1.25rem;
+        }
+        .form-select:hover, .form-control:hover {
+            border-color: #666; /* Slightly lighter border color on hover */
+            color: #fff;
+            background-color: #f0f0f0; /* Slightly lighter background on hover */
+        }
+        .form-select:focus, .form-control:focus {
+            border-color: #f5f5f5;
+            color: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(181, 189, 197, 0.25);
+            background-color: #000000; /* Lighter background on focus */
+        }
+        .btn-primary {
+            background-color: #0b0b0b;
+            border-color: #28d910;
+            border-radius: 6px;
+            font-weight: 500;
+            color: #ffffff; /* Add color for better readability */
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #1a1a1a; /* Slightly lighter background on hover */
+            border-color: #3bff23; /* Brighter green border on hover */
+            transform: scale(1.05); /* Slight zoom-in effect */
+        }
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+        #photo {
+            margin-top: 10px;
+        }
+        .form-link {
+            font-size: 1rem;
+            color: #2bd80d;
+            text-decoration: none;
+        }
+        .form-link:hover {
+            text-decoration: underline;
+        }
+        .form-check {
+            margin-bottom: 1.5rem;
+            color: #000;
+            text-transform:uppercase ;
+        }
+        .tooltip-inner {
+            background-color: #3ae518;
+            color: #11ec20;
+        }
+        .error-message {
+            color: #ff0019; /* Red color for error messages */
+            font-size: 0.875rem;
+        }
+        /* Filled (Valid) state */
+        .form-control:valid, .form-select:valid {
+            background-color: #28a745; /* Green background for valid fields */
+            color: #fff; /* White text for better contrast */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div data-animation="default" class="navbar_fixed w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8ccf" role="banner" data-duration="0">
+            <div class="navbar_component">
+                <div class="navbar_container">
+                    <a href="/" aria-current="page" class="navbar_logo-link w-nav-brand w--current">
+                        <img src="codewar-logo.jpg" loading="lazy" alt="" class="navbar_logo"/>
+                    </a>
+                    <nav role="navigation" class="navbar_menu w-nav-menu">
+                        <div class="navbar_menu-links">
+                            <a href="code.html" class="navbar_link w-nav-link">Home</a>
+                            <a href="about.html" class="navbar_link w-nav-link">About CodeWar 2.O</a>
+                            <div data-hover="false" data-delay="200" id="dojo-menu" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8cd5" class="navbar_menu-dropdown w-dropdown">
+                                <div class="navbar_dropdown-toggle w-dropdown-toggle">
+                                    <div>Gallery</div>
+                                    <div class="dropdown-icon w-embed">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill="currentcolor"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <nav class="navbar_dropdown-list w-dropdown-list">
+                                    <div class="navbar_dropdown-link-list">
+                                        <a href="gallery.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 1.0</div>
+                                            </div>
+                                        </a>
+                                        <a href="gallery1.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 2.0</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <a href="https://www.pcet.ac.in/" class="navbar_link w-nav-link">About Us</a>
+                        </div>
+                        <div class="navbar_menu-buttons">
+                            <a id="join-btn" href="registration.html" class="button is-secondary is-small w-button">Registration</a>
+                        </div>
+                    </nav>
+                    <div class="navbar_menu-button w-nav-button">
+                        <div class="menu-icon1">
+                            <div class="menu-icon1_line-top"></div>
+                            <div class="menu-icon1_line-middle">
+                                <div class="menu-icon_line-middle-inner"></div>
+                            </div>
+                            <div class="menu-icon1_line-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-animation="default" class="navbar_fixed w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8ccf" role="banner" data-duration="0">
+            <div class="navbar_component">
+                <div class="navbar_container">
+                    <a href="/" aria-current="page" class="navbar_logo-link w-nav-brand w--current">
+                        <img src="codewar-logo.jpg" loading="lazy" alt="" class="navbar_logo"/>
+                    </a>
+                    <nav role="navigation" class="navbar_menu w-nav-menu">
+                        <div class="navbar_menu-links">
+                            <a href="code.html" class="navbar_link w-nav-link">Home</a>
+                            <a href="about.html" class="navbar_link w-nav-link">About CodeWar 2.O</a>
+                            <div data-hover="false" data-delay="200" id="dojo-menu" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8cd5" class="navbar_menu-dropdown w-dropdown">
+                                <div class="navbar_dropdown-toggle w-dropdown-toggle">
+                                    <div>Gallery</div>
+                                    <div class="dropdown-icon w-embed">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill="currentcolor"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <nav class="navbar_dropdown-list w-dropdown-list">
+                                    <div class="navbar_dropdown-link-list">
+                                        <a href="gallery.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 1.0</div>
+                                            </div>
+                                        </a>
+                                        <a href="gallery1.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 2.0</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <a href="https://www.pcet.ac.in/" class="navbar_link w-nav-link">About Us</a>
+                        </div>
+                        <div class="navbar_menu-buttons">
+                            <a id="join-btn" href="registration.html" class="button is-secondary is-small w-button">Registration</a>
+                        </div>
+                    </nav>
+                    <div class="navbar_menu-button w-nav-button">
+                        <div class="menu-icon1">
+                            <div class="menu-icon1_line-top"></div>
+                            <div class="menu-icon1_line-middle">
+                                <div class="menu-icon_line-middle-inner"></div>
+                            </div>
+                            <div class="menu-icon1_line-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-animation="default" class="navbar_fixed w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8ccf" role="banner" data-duration="0">
+            <div class="navbar_component">
+                <div class="navbar_container">
+                    <a href="/" aria-current="page" class="navbar_logo-link w-nav-brand w--current">
+                        <img src="codewar-logo.jpg" loading="lazy" alt="" class="navbar_logo"/>
+                    </a>
+                    <nav role="navigation" class="navbar_menu w-nav-menu">
+                        <div class="navbar_menu-links">
+                            <a href="code.html" class="navbar_link w-nav-link">Home</a>
+                            <a href="about.html" class="navbar_link w-nav-link">About CodeWar 2.O</a>
+                            <div data-hover="false" data-delay="200" id="dojo-menu" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8cd5" class="navbar_menu-dropdown w-dropdown">
+                                <div class="navbar_dropdown-toggle w-dropdown-toggle">
+                                    <div>Gallery</div>
+                                    <div class="dropdown-icon w-embed">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill="currentcolor"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <nav class="navbar_dropdown-list w-dropdown-list">
+                                    <div class="navbar_dropdown-link-list">
+                                        <a href="gallery.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 1.0</div>
+                                            </div>
+                                        </a>
+                                        <a href="gallery1.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 2.0</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <a href="https://www.pcet.ac.in/" class="navbar_link w-nav-link">About Us</a>
+                        </div>
+                        <div class="navbar_menu-buttons">
+                            <a id="join-btn" href="registration.html" class="button is-secondary is-small w-button">Registration</a>
+                        </div>
+                    </nav>
+                    <div class="navbar_menu-button w-nav-button">
+                        <div class="menu-icon1">
+                            <div class="menu-icon1_line-top"></div>
+                            <div class="menu-icon1_line-middle">
+                                <div class="menu-icon_line-middle-inner"></div>
+                            </div>
+                            <div class="menu-icon1_line-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-animation="default" class="navbar_fixed w-nav" data-easing2="ease" fs-scrolldisable-element="smart-nav" data-easing="ease" data-collapse="medium" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8ccf" role="banner" data-duration="0">
+            <div class="navbar_component">
+                <div class="navbar_container">
+                    <a href="/" aria-current="page" class="navbar_logo-link w-nav-brand w--current">
+                        <img src="img/codewar-logo.jpg" loading="lazy" alt="" class="navbar_logo"/>
+                    </a>
+                    <nav role="navigation" class="navbar_menu w-nav-menu">
+                        <div class="navbar_menu-links">
+                            <a href="code.html" class="navbar_link w-nav-link">Home</a>
+                            <a href="about.html" class="navbar_link w-nav-link">About CodeWar 2.O</a>
+                            <div data-hover="false" data-delay="200" id="dojo-menu" data-w-id="5d852efa-8106-c00b-da3b-afd629aa8cd5" class="navbar_menu-dropdown w-dropdown">
+                                <div class="navbar_dropdown-toggle w-dropdown-toggle">
+                                    <div>Gallery</div>
+                                    <div class="dropdown-icon w-embed">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29289 8.29289C5.68342 7.90237 6.31658 7.90237 6.70711 8.29289L12 13.5858L17.2929 8.29289C17.6834 7.90237 18.3166 7.90237 18.7071 8.29289C19.0976 8.68342 19.0976 9.31658 18.7071 9.70711L12.7071 15.7071C12.3166 16.0976 11.6834 16.0976 11.2929 15.7071L5.29289 9.70711C4.90237 9.31658 4.90237 8.68342 5.29289 8.29289Z" fill="currentcolor"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <nav class="navbar_dropdown-list w-dropdown-list">
+                                    <div class="navbar_dropdown-link-list">
+                                        <a href="gallery.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 1.0</div>
+                                            </div>
+                                        </a>
+                                        <a href="gallery1.html" class="navbar_dropdown-link w-inline-block">
+                                            <div class="navbar_icon-wrapper">
+                                                <div class="icon-1x1-small-plus w-embed">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="navbar_text-wrapper">
+                                                <div class="text-weight-bold">CodeWar 2.0</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </nav>
+                            </div>
+                            <a href="https://www.pcet.ac.in/" class="navbar_link w-nav-link">About Us</a>
+                        </div>
+                        <div class="navbar_menu-buttons">
+                            <a id="join-btn" href="registration.html" class="button is-secondary is-small w-button">Registration</a>
+                        </div>
+                    </nav>
+                    <div class="navbar_menu-button w-nav-button">
+                        <div class="menu-icon1">
+                            <div class="menu-icon1_line-top"></div>
+                            <div class="menu-icon1_line-middle">
+                                <div class="menu-icon_line-middle-inner"></div>
+                            </div>
+                            <div class="menu-icon1_line-bottom"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div style="padding: 30px; padding-top: 100px;">
+        <div class="card mx-auto p-4" style="width: 100%; max-width: 700px; margin: 0 auto;">
+            <style>
+                .image-logo {
+                    width: 100%;
+                    max-width: 200px;
+                    height: auto;
+                }
+                @media screen and (max-width: 991px) {
+                    .image-logo {
+                        max-width: 150px;
+                    }
+                }
+                @media screen and (max-width: 767px) {
+                    .image-logo {
+                        max-width: 120px;
+                    }
+                }
+                @media screen and (max-width: 479px) {
+                    .image-logo {
+                        max-width: 100px;
+                    }
+                }
+            </style>
+            <div class="text-center mb-2">
+                <img src="img/codewar-logo-removebg-preview.png" alt="CodeWar 2.0 Logo" class="image-logo">
+            </div>
+            
+            <form id="registrationForm" action="/api/register/individual" method="POST" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Student Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required minlength="3">
+                    <div class="error-message" id="nameError"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Date of Birth:</label>
+                    <div class="d-flex gap-2">
+                        <select id="dobDay" name="dobDay" class="form-select" required>
+                            <option value="" disabled selected>Day</option>
+                        </select>
+                        <select id="dobMonth" name="dobMonth" class="form-select" required>
+                            <option value="" disabled selected>Month</option>
+                        </select>
+                        <select id="dobYear" name="dobYear" class="form-select" required>
+                            <option value="" disabled selected>Year</option>
+                        </select>
+                    </div>
+                    <div class="error-message" id="dobError"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="rollNumber" class="form-label">Roll Number:</label>
+                    <input type="text" class="form-control" id="rollNumber" name="rollNumber" required maxlength="20">
+                    <div class="error-message" id="rollNumberError"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="branch" class="form-label">Branch</label>
+                    <select id="branch" name="branch" class="form-select" required>
+                        <option value="" disabled selected>Select Branch</option>
+                        <option value="Aeronautical Engineering">Aeronautical Engineering</option>
+                        <option value="Aerospace Engineering">Aerospace Engineering</option>
+                        <option value="Agricultural Engineering">Agricultural Engineering</option>
+                        <option value="Artificial Intelligence and Data Science">Artificial Intelligence and Data Science</option>
+                        <option value="Automobile Engineering">Automobile Engineering</option>
+                        <option value="B.Arch">B.Arch</option>
+                        <option value="Biomedical Engineering">Biomedical Engineering</option>
+                        <option value="Biotechnology">Biotechnology</option>
+                        <option value="Biotechnology and Biochemical Engineering">Biotechnology and Biochemical Engineering</option>
+                        <option value="Chemical and Electrochemical Engineering">Chemical and Electrochemical Engineering</option>
+                        <option value="Chemical Engineering">Chemical Engineering</option>
+                        <option value="Civil Engineering">Civil Engineering</option>
+                        <option value="Computer Science and Business Systems">Computer Science and Business Systems</option>
+                        <option value="Computer Science and Engineering (CSE)">Computer Science and Engineering (CSE)</option>
+                        <option value="Computer Science and Design">Computer Science and Design</option>
+                        <option value="Computer Science and Engineering (AIML) CSE">Computer Science and Engineering (AIML) CSE</option>
+                        <option value="Computer Science and Engineering (Cyber Security) CSE">Computer Science and Engineering (Cyber Security) CSE</option>
+                        <option value="Computer and Communication Engineering">Computer and Communication Engineering</option>
+                        <option value="Data Science and Engineering">Data Science and Engineering</option>
+                        <option value="Electrical and Electronics Engineering (EEE)">Electrical and Electronics Engineering (EEE)</option>
+                        <option value="Electronics and Communication Engineering (ECE)">Electronics and Communication Engineering (ECE)</option>
+                        <option value="Electronics and Instrumentation Engineering (EIE)">Electronics and Instrumentation Engineering (EIE)</option>
+                        <option value="Electronics and TeleCommunication Engineering">Electronics and TeleCommunication Engineering</option>
+                        <option value="Environment Engineering">Environment Engineering</option>
+                        <option value="Fashion Technology">Fashion Technology</option>
+                        <option value="Food Technology">Food Technology</option>
+                        <option value="Geo Informatics Engineering">Geo Informatics Engineering</option>
+                        <option value="Handloom and Textile Technology">Handloom and Textile Technology</option>
+                        <option value="Industrial Engineering">Industrial Engineering</option>
+                        <option value="Industrial Engineering and Management">Industrial Engineering and Management</option>
+                        <option value="Information Technology (IT)">Information Technology (IT)</option>
+                        <option value="Instrumentation and Control Engineering">Instrumentation and Control Engineering</option>
+                        <option value="Manufacturing Engineering">Manufacturing Engineering</option>
+                        <option value="Marine Engineering">Marine Engineering</option>
+                        <option value="Material Science Engineering">Material Science Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Mechanical Engineering (Sandwich)">Mechanical Engineering (Sandwich)</option>
+                        <option value="Mechanical and Automation Engineering">Mechanical and Automation Engineering</option>
+                        <option value="Mechatronics Engineering">Mechatronics Engineering</option>
+                        <option value="Medical Electronics">Medical Electronics</option>
+                        <option value="Petrochemical Engineering">Petrochemical Engineering</option>
+                        <option value="Petrochemical Technology">Petrochemical Technology</option>
+                        <option value="Petroleum Engineering">Petroleum Engineering</option>
+                        <option value="Pharmaceutical Technology">Pharmaceutical Technology</option>
+                        <option value="Plastic Technology">Plastic Technology</option>
+                        <option value="Production Engineering">Production Engineering</option>
+                        <option value="Robotics and Automation">Robotics and Automation</option>
+                        <option value="Safety and Fire Engineering">Safety and Fire Engineering</option>
+                        <option value="Textile Chemistry">Textile Chemistry</option>
+                        <option value="Textile Technology">Textile Technology</option>
+                    </select>
+                    <div class="error-message" id="branchError"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="college" class="form-label">College Name:</label>
+                    <input type="text" class="form-control" id="college" name="college" required>
+                    <div class="error-message" id="collegeError"></div>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="confirm" name="confirm" required>
+                    <label class="form-check-label" for="confirm">
+                        I agree to the terms and conditions
+                    </label>
+                    <div class="error-message" id="confirmError"></div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="reset" class="btn btn-primary">Reset</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate date dropdowns
+            const daySelect = document.getElementById('dobDay');
+            const monthSelect = document.getElementById('dobMonth');
+            const yearSelect = document.getElementById('dobYear');
+
+            // Populate days
+            for (let i = 1; i <= 31; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                daySelect.appendChild(option);
+            }
+
+            // Populate months
+            for (let i = 1; i <= 12; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                monthSelect.appendChild(option);
+            }
+
+            // Populate years
+            const currentYear = new Date().getFullYear();
+            for (let i = currentYear; i >= 1900; i--) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                yearSelect.appendChild(option);
+            }
+
+            // Form validation and submission
+            const form = document.getElementById('registrationForm');
+            
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                if (!validateForm()) return;
+
+                try {
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData.entries());
+
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (!result.success) {
+                        throw new Error(result.error);
+                    }
+
+                    alert('Registration Successful!');
+                    window.location.href = 'payment.html';
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                }
+            });
+
+            // Validate form fields before submission
+            function validateForm() {
+                let isValid = true;
+
+                // Clear previous errors
+                clearErrors();
+
+                // Name validation
+                const name = document.getElementById('name').value.trim();
+                if (name.length < 3) {
+                    showError('nameError', 'Name must be at least 3 characters long.');
+                    isValid = false;
+                }
+
+                // Date of birth validation
+                const dobDay = document.getElementById('dobDay').value;
+                const dobMonth = document.getElementById('dobMonth').value;
+                const dobYear = document.getElementById('dobYear').value;
+                if (!dobDay || !dobMonth || !dobYear) {
+                    showError('dobError', 'Please select a valid date of birth.');
+                    isValid = false;
+                }
+
+                // Roll number validation
+                const rollNumber = document.getElementById('rollNumber').value.trim();
+                if (rollNumber.length > 20) {
+                    showError('rollNumberError', 'Roll number must not exceed 20 characters.');
+                    isValid = false;
+                }
+
+                // Phone number validation
+                const phone = document.getElementById('phone').value.trim();
+                const phonePattern = /^[0-9]{10}$/;
+                if (!phonePattern.test(phone)) {
+                    showError('phoneError', 'Phone number must be a valid 10-digit number.');
+                    isValid = false;
+                }
+
+                // Email validation
+                const email = document.getElementById('email').value.trim();
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!emailPattern.test(email)) {
+                    showError('emailError', 'Please enter a valid email address.');
+                    isValid = false;
+                }
+
+                // Branch validation
+                const branch = document.getElementById('branch').value;
+                if (!branch) {
+                    showError('branchError', 'Please select a branch.');
+                    isValid = false;
+                }
+
+                // College name validation
+                const college = document.getElementById('college').value.trim();
+                if (college.length < 3) {
+                    showError('collegeError', 'College name must be at least 3 characters long.');
+                    isValid = false;
+                }
+
+                // Terms and conditions validation
+                const confirm = document.getElementById('confirm').checked;
+                if (!confirm) {
+                    showError('confirmError', 'You must agree to the terms and conditions.');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Helper functions to show and clear error messages
+            function showError(id, message) {
+                document.getElementById(id).textContent = message;
+            }
+
+            function clearErrors() {
+                const errorElements = document.querySelectorAll('.error-message');
+                errorElements.forEach((el) => el.textContent = '');
+            }
+        });
+    </script>
+    
+</body>
+</html>
