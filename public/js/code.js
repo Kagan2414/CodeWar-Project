@@ -1,4 +1,25 @@
+// Disable right-click
+document.addEventListener("contextmenu", (event) => event.preventDefault());
 
+// Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S, and Ctrl+H shortcuts
+document.addEventListener("keydown", (event) => {
+  if (
+    event.key === "F12" ||
+    (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) ||
+    (event.ctrlKey && (event.key === "U" || event.key === "S" || event.key === "H"))
+  ) {
+    event.preventDefault();
+  }
+});
+
+// Prevent opening DevTools via console
+(function () {
+  const devtools = /./;
+  devtools.toString = function () {
+    return "";
+  };
+  console.log("%c", devtools);
+})();
 
 ( () => {
     var jv = Object.create;
